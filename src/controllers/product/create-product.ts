@@ -1,7 +1,7 @@
 import { Handler } from "express";
 import z from "zod";
 
-import { ProductModel } from "@/database/models";
+import { ProductModel } from "@/database";
 import { zParse } from "@/utils";
 
 const zodSchema = z.object({

@@ -1,4 +1,4 @@
-import { Boom, internal } from "@hapi/boom";
+import { Boom, boomify, internal } from "@hapi/boom";
 import { Express, NextFunction, Response } from "express";
 import { omit } from "lodash";
 
@@ -59,3 +59,34 @@ const lookup = (code: string, fallbackMessage?: string) => {
       messages.UNKNOWN,
   };
 };
+
+export class AppError {
+  constructor(
+    public code: keyof typeof CODES,
+    public message?: string,
+    public data: Record<string, unknown> = {},
+  ) {
+    return boomify(new Error(message), {
+      data: { code: CODES[code], ...data },
+      statusCode: 500,
+    });
+  }
+}
+
+export class UnauthenticatedError {
+  constructor(message?: string) {
+    return boomify(new Error(message), {
+      data: { code: CODES.UNAUTHORIZED },
+      statusCode: 401,
+    });
+  }
+}
+
+export class UserExistedError {
+  constructor(message?: string, data: Record<string, unknown> = {}) {
+    return boomify(new Error(message), {
+      data: { code: "user_existed", ...data },
+      statusCode: 400,
+    });
+  }
+}

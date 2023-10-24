@@ -8,7 +8,7 @@ const transport = pino.transport({
     {
       target: "pino/file",
       level,
-      options: { destination: path.join(__dirname, "../../tmp/app.log") },
+      options: { destination: path.join(process.cwd(), "./tmp/app.log") },
     },
 
     ...(process.env.ENV === "development"

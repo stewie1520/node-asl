@@ -1,4 +1,4 @@
-import { ProductModel } from "@/database/models";
+import { ProductModel } from "@/database";
 import { zPagination, zParse } from "@/utils";
 import { Handler } from "express";
 import { z } from "zod";
