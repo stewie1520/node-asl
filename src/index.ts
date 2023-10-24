@@ -2,7 +2,7 @@ import "./init";
 
 import { initControllers } from "./controllers";
 import { connectToDatabase } from "./database/connect";
-import logger from "./logger";
+import logger from "./packages/logger";
 import { handleError } from "./utils";
 import { createApp } from "./app";
 

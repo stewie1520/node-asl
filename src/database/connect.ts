@@ -1,4 +1,4 @@
-import logger from "@/logger";
+import logger from "@/packages/logger";
 import mongoose from "mongoose";
 
 export const connectToDatabase = async () => {
