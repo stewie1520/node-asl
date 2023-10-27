@@ -1,18 +1,34 @@
 import "./init";
 
-import { initControllers } from "./controllers";
+import swaggerUi from "swagger-ui-express";
 import { connectToDatabase } from "./database/connect";
 import logger from "./packages/logger";
 import { handleError } from "./utils";
 import { createApp } from "./app";
 import { useJwtStrategy } from "./packages/passport";
+import { connectToRedis } from "./packages/redis";
+import { RegisterRoutes } from "./controllers/routes";
 
 connectToDatabase();
+connectToRedis();
 const app = createApp();
+
+if (process.env.ENV !== "production") {
+  app.use(
+    "/docs",
+    swaggerUi.serve,
+    swaggerUi.setup(undefined, {
+      swaggerOptions: {
+        url: "/swagger.json",
+      },
+    }),
+  );
+}
 
 useJwtStrategy();
 
-initControllers(app);
+RegisterRoutes(app);
+
 handleError(app);
 
 process.on("uncaughtException", (err) => {

@@ -1,7 +1,4 @@
-import { asl } from "@/asl";
 import { UserModel, withoutPassword } from "@/database";
-import { UnauthenticatedError } from "@/utils";
-import { Handler } from "express";
 import passport from "passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
 
@@ -27,24 +24,4 @@ export const useJwtStrategy = () => {
   );
 
   passport.use(strategy);
-};
-
-export const passportJwtApiMiddleware: () => Handler = () => {
-  return function (req, res, next) {
-    passport.authenticate(
-      "jwt",
-      { session: false },
-      function callback(err?: Error, user?: Express.User) {
-        if (err || !user) {
-          return next(new UnauthenticatedError(err?.message));
-        }
-
-        const store = asl.getStore() as any;
-        store.user = user;
-
-        req.user = user;
-        next();
-      },
-    )(req, res, next);
-  };
 };

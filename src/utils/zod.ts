@@ -1,6 +1,6 @@
 import { badRequest } from "@hapi/boom";
-import type { Request } from "express";
-import { AnyZodObject, ZodError, ZodTypeAny, z } from "zod";
+import type { Handler, Request } from "express";
+import { AnyZodObject, ZodError, z } from "zod";
 
 export async function zParse<T extends AnyZodObject>(
   schema: T,
@@ -17,8 +17,8 @@ export async function zParse<T extends AnyZodObject>(
   }
 }
 
-const zNumericString = (schema: ZodTypeAny) =>
-  z.preprocess((a) => {
+const zNumericString = (schema: z.ZodDefault<z.ZodNumber>) =>
+  z.preprocess<z.ZodDefault<z.ZodNumber>>((a) => {
     if (typeof a === "string") {
       return parseInt(a, 10);
     } else if (typeof a === "number") {
@@ -47,3 +47,14 @@ export const zPagination = (overwrite = {}) =>
       .describe("Pagination order"),
     ...overwrite,
   });
+
+type TZMiddleware = <T extends AnyZodObject>(schema: T) => Handler;
+
+export const zMiddleware: TZMiddleware = (schema) => async (req, res, next) => {
+  try {
+    await zParse(schema, req);
+    next();
+  } catch (error) {
+    next(error);
+  }
+};

@@ -1,0 +1,22 @@
+{
+  "entryFile": "src/index.ts",
+  "controllerPathGlobs": [
+    "src/controllers/*/index.ts"
+  ],
+  "noImplicitAdditionalProperties": "throw-on-extras",
+  "spec": {
+    "outputDirectory": "public",
+    "specVersion": 3,
+    "securityDefinitions": {
+      "api_key": {
+        "type": "apiKey",
+        "name": "authorization",
+        "in": "header"
+      }
+    }
+  },
+  "routes": {
+    "routesDir": "src/controllers",
+    "authenticationModule": "./src/packages/passport/index.ts"
+  }
+}

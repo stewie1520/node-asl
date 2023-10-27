@@ -7,6 +7,7 @@ declare global {
       JWT_SECRET: string;
       JWT_EXPIRES_IN: string;
       JWT_REFRESH_EXPIRES_IN: string;
+      REDIS_URL: string;
     }
   }
 }

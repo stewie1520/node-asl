@@ -3,6 +3,7 @@ import paginate from "mongoose-paginate-v2";
 
 export interface User {
   name: string;
+  phone: string;
   email: string;
   password: string;
 }
@@ -12,7 +13,8 @@ export interface UserDocument extends mongoose.Document, User {}
 const userSchema = new Schema<UserDocument>(
   {
     name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
+    email: { type: String, required: false, unique: true, sparse: true },
+    phone: { type: String, required: true, unique: true },
     password: { type: String, required: true },
   },
   { timestamps: true },

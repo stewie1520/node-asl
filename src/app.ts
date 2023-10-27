@@ -1,11 +1,12 @@
 import bodyParser from "body-parser";
 import express from "express";
-import { asl } from "./asl";
+import { asl } from "./packages/asl";
 
 import { Express } from "express";
 
 export const createApp: () => Express = () => {
   const app = express();
+  app.use(express.static("public"));
 
   app.use(
     bodyParser.urlencoded({

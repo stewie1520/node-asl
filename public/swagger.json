@@ -1,0 +1,430 @@
+{
+	"components": {
+		"examples": {},
+		"headers": {},
+		"parameters": {},
+		"requestBodies": {},
+		"responses": {},
+		"schemas": {
+			"ListProductsDTO": {
+				"properties": {
+					"limit": {
+						"type": "number",
+						"format": "double"
+					},
+					"offset": {
+						"type": "number",
+						"format": "double"
+					},
+					"order": {
+						"type": "string",
+						"enum": [
+							"updatedAt-ASC",
+							"updatedAt-DESC",
+							"createdAt-ASC",
+							"createdAt-DESC"
+						]
+					}
+				},
+				"required": [
+					"limit",
+					"offset",
+					"order"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"TokensDto": {
+				"properties": {
+					"accessToken": {
+						"type": "string"
+					},
+					"refreshToken": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"accessToken",
+					"refreshToken"
+				],
+				"type": "object",
+				"additionalProperties": false
+			},
+			"GetCurrentUserDto": {
+				"properties": {
+					"name": {
+						"type": "string"
+					},
+					"phone": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"name",
+					"phone",
+					"email"
+				],
+				"type": "object",
+				"additionalProperties": false
+			}
+		},
+		"securitySchemes": {
+			"api_key": {
+				"type": "apiKey",
+				"name": "authorization",
+				"in": "header"
+			}
+		}
+	},
+	"info": {
+		"title": "asl",
+		"version": "1.0.0",
+		"license": {
+			"name": "ISC"
+		},
+		"contact": {}
+	},
+	"openapi": "3.0.0",
+	"paths": {
+		"/products": {
+			"post": {
+				"operationId": "CreateProduct",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"products"
+				],
+				"security": [
+					{
+						"api_key": []
+					}
+				],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"image": {
+										"type": "string"
+									},
+									"description": {
+										"type": "string"
+									},
+									"price": {
+										"type": "number",
+										"format": "double"
+									},
+									"name": {
+										"type": "string"
+									}
+								},
+								"type": "object"
+							}
+						}
+					}
+				}
+			},
+			"get": {
+				"operationId": "ListProduct",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {}
+							}
+						}
+					}
+				},
+				"tags": [
+					"products"
+				],
+				"security": [
+					{
+						"api_key": []
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "limit",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "offset",
+						"required": true,
+						"schema": {
+							"format": "double",
+							"type": "number"
+						}
+					},
+					{
+						"in": "query",
+						"name": "order",
+						"required": true,
+						"schema": {
+							"type": "string",
+							"enum": [
+								"updatedAt-ASC",
+								"updatedAt-DESC",
+								"createdAt-ASC",
+								"createdAt-DESC"
+							]
+						}
+					}
+				]
+			}
+		},
+		"/users/send-otp-phone": {
+			"post": {
+				"operationId": "SendOTPToRegister",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"anyOf": [
+										{
+											"properties": {
+												"expiredAt": {},
+												"issuedAt": {},
+												"sessionId": {}
+											},
+											"required": [
+												"issuedAt",
+												"sessionId"
+											],
+											"type": "object"
+										},
+										{
+											"properties": {
+												"expiredAt": {
+													"type": "string",
+													"format": "date-time"
+												},
+												"issuedAt": {},
+												"sessionId": {}
+											},
+											"required": [
+												"expiredAt",
+												"issuedAt",
+												"sessionId"
+											],
+											"type": "object"
+										}
+									]
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"users"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"phone": {
+										"type": "string"
+									}
+								},
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users/verify-otp": {
+			"post": {
+				"operationId": "VerifyOTP",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"expiredAt": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"issuedAt": {},
+										"sessionId": {}
+									},
+									"required": [
+										"expiredAt",
+										"issuedAt",
+										"sessionId"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"users"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"otp": {
+										"type": "string"
+									},
+									"sessionId": {
+										"type": "string"
+									}
+								},
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users/register-account": {
+			"post": {
+				"operationId": "RegisterAccount",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TokensDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"users"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"password": {
+										"type": "string"
+									},
+									"sessionId": {
+										"type": "string"
+									},
+									"name": {
+										"type": "string"
+									}
+								},
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/users/me": {
+			"get": {
+				"operationId": "Me",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/GetCurrentUserDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"users"
+				],
+				"security": [
+					{
+						"api_key": []
+					}
+				],
+				"parameters": []
+			}
+		},
+		"/users/login": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/TokensDto"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"users"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"properties": {
+									"password": {
+										"type": "string"
+									},
+									"phone": {
+										"type": "string"
+									}
+								},
+								"type": "object"
+							}
+						}
+					}
+				}
+			}
+		}
+	},
+	"servers": [
+		{
+			"url": "/"
+		}
+	]
+}

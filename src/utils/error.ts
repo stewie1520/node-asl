@@ -16,13 +16,19 @@ export const handleError = (app: Express) => {
       .header(boomErr.output.headers)
       .json({
         ...boomErr.output.payload,
+        ...(boomErr.data?.code
+          ? {
+              ...lookup(boomErr.data.code),
+              data: omit(boomErr.data, "code"),
+            }
+          : {
+              code: CODES.UNKNOWN,
+              message: boomErr.message,
+              data: boomErr.data,
+            }),
         ...(boomErr.data?.isZod && {
           data: JSON.parse(boomErr.output.payload.message),
           ...lookup(CODES.VALIDATION),
-        }),
-        ...(boomErr.data?.code && {
-          ...lookup(boomErr.data.code),
-          data: omit(boomErr.data, "code"),
         }),
       });
   });
