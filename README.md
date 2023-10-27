@@ -8,6 +8,12 @@ cp .env.example .env
 pnpm install
 ```
 
+Generate swagger and routes
+ 
+```sh
+pnpm swagger
+```
+
 Run dev
 
 ```sh
