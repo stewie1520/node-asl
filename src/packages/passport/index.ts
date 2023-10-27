@@ -1,7 +1,7 @@
 import { UnauthenticatedError } from "@/utils";
 import express from "express";
 import passport from "passport";
-import { setCurrentUser } from "../asl";
+import asl from "../asl";
 
 export function expressAuthentication(
   request: express.Request,
@@ -26,7 +26,7 @@ const extractUser = (request: express.Request) =>
           return reject(new UnauthenticatedError(err?.message));
         }
 
-        setCurrentUser(user);
+        asl.setCurrentUser(user);
         return resolve(user);
       },
     )(request);
