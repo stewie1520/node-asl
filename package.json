@@ -19,6 +19,7 @@
   "dependencies": {
     "@hapi/boom": "^10.0.1",
     "@tsoa/runtime": "^5.0.0",
+    "aws-sdk": "^2.1482.0",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
     "dotenv": "^16.3.1",

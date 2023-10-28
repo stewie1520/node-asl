@@ -1,5 +1,4 @@
 import "./init";
-
 import swaggerUi from "swagger-ui-express";
 import { connectToDatabase } from "./database/connect";
 import logger from "./packages/logger";
@@ -9,33 +8,36 @@ import { useJwtStrategy } from "./packages/passport";
 import { connectToRedis } from "./packages/redis";
 import { RegisterRoutes } from "./controllers/routes";
 
-connectToDatabase();
-connectToRedis();
-const app = createApp();
+const main = async () => {
+  await Promise.all([connectToDatabase(), connectToRedis()]);
+  const app = createApp();
 
-if (process.env.ENV !== "production") {
-  app.use(
-    "/docs",
-    swaggerUi.serve,
-    swaggerUi.setup(undefined, {
-      swaggerOptions: {
-        url: "/swagger.json",
-      },
-    }),
-  );
-}
+  if (process.env.ENV !== "production") {
+    app.use(
+      "/docs",
+      swaggerUi.serve,
+      swaggerUi.setup(undefined, {
+        swaggerOptions: {
+          url: "/swagger.json",
+        },
+      }),
+    );
+  }
 
-useJwtStrategy();
+  useJwtStrategy();
 
-RegisterRoutes(app);
+  RegisterRoutes(app);
 
-handleError(app);
+  handleError(app);
 
-process.on("uncaughtException", (err) => {
-  logger.fatal(err, "uncaught exception detected");
-  process.exit(1);
-});
+  process.on("uncaughtException", (err) => {
+    logger.fatal(err, "uncaught exception detected");
+    process.exit(1);
+  });
 
-app.listen(3000, () => {
-  logger.info("🎧 Server is running on port 3000");
-});
+  app.listen(3000, () => {
+    logger.info("🎧 Server is running on port 3000");
+  });
+};
+
+main();
