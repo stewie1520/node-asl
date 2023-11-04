@@ -1,10 +1,9 @@
 import { ProductModel } from "@/database";
-import { zMiddleware } from "@/utils";
+import { Validation } from "@/packages/validation";
 import {
   Body,
   Controller,
   Get,
-  Middlewares,
   Post,
   Queries,
   Route,
@@ -23,7 +22,7 @@ import {
 @Security("api_key")
 export class ProductController extends Controller {
   @Post("/")
-  @Middlewares(zMiddleware(createProductValidation))
+  @Validation(createProductValidation)
   public async createProduct(
     @Body()
     {
@@ -45,7 +44,7 @@ export class ProductController extends Controller {
   }
 
   @Get("/")
-  @Middlewares(zMiddleware(listProductsValidation))
+  @Validation(listProductsValidation)
   public async listProduct(
     @Queries()
     { limit, offset, order }: ListProductsDTO,

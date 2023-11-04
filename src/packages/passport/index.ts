@@ -1,4 +1,4 @@
-import { UnauthenticatedError } from "@/utils";
+import { UnauthenticatedError } from "@/packages/error";
 import express from "express";
 import passport from "passport";
 import asl from "../asl";

@@ -1,12 +1,11 @@
 import { UserModel } from "@/database";
-import { createUserTokens } from "@/packages/security/jwt";
+import { createUserTokens } from "@/packages/security";
+import { Validation } from "@/packages/validation";
 import { UserAuthenticationService } from "@/services/user-authentication";
-import { zMiddleware } from "@/utils";
 import {
   Body,
   Controller,
   Get,
-  Middlewares,
   Post,
   Response,
   Route,
@@ -26,7 +25,7 @@ import {
 @Tags("users")
 export class UserController extends Controller {
   @Post("send-otp-phone")
-  @Middlewares(zMiddleware(sendOTPToRegisterValidation))
+  @Validation(sendOTPToRegisterValidation)
   public async sendOTPToRegister(
     @Body() { phone }: z.infer<typeof sendOTPToRegisterValidation>["body"],
   ) {
@@ -39,7 +38,7 @@ export class UserController extends Controller {
   }
 
   @Post("verify-otp")
-  @Middlewares(zMiddleware(verifyOTPValidation))
+  @Validation(verifyOTPValidation)
   public async verifyOTP(
     @Body() { sessionId, otp }: z.infer<typeof verifyOTPValidation>["body"],
   ) {
@@ -48,7 +47,7 @@ export class UserController extends Controller {
 
   @Post("register-account")
   @Response<TokensDto>("200")
-  @Middlewares(zMiddleware(registerAccountValidation))
+  @Validation(registerAccountValidation)
   public async registerAccount(
     @Body()
     {
@@ -82,7 +81,7 @@ export class UserController extends Controller {
 
   @Post("login")
   @Response<TokensDto>("200")
-  @Middlewares(zMiddleware(loginValidation))
+  @Validation(loginValidation)
   public async login(
     @Body() { phone, password }: z.infer<typeof loginValidation>["body"],
   ): Promise<TokensDto> {

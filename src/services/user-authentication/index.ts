@@ -3,12 +3,20 @@ import { UserModel } from "@/database";
 import asl from "@/packages/asl";
 import { client } from "@/packages/redis";
 import { createUserTokens } from "@/packages/security/jwt";
-import { comparePassword, hashPassword } from "@/packages/security/password";
+import { comparePassword, hashPassword } from "@/packages/security";
 import { EntityId } from "redis-om";
 
 export class UserAuthenticationService {
   static readonly OTP_VERIFY_TTL = 5 * 60;
   static readonly SESSION_SIGNUP_TTL = 30 * 60;
+
+  private static randomOTP() {
+    if (process.env.ENV === "development") {
+      return "".padStart(6, "0");
+    }
+
+    return Math.random().toString().slice(2, 8);
+  }
 
   /**
    * Generate OTP for sign up. Will return the existing OTP if it is not expired.
@@ -36,7 +44,7 @@ export class UserAuthenticationService {
     userOTP = {
       sessionId: "user-otp-" + crypto.randomUUID(),
       phone,
-      otp: Math.random().toString().slice(2, 8),
+      otp: this.randomOTP(),
       issuedAt: new Date(),
       verified: false,
     };

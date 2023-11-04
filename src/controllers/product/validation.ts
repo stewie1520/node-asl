@@ -1,4 +1,4 @@
-import { zPagination } from "@/utils";
+import { zPagination } from "@/packages/validation";
 import { z } from "zod";
 
 export const createProductValidation = z.object({

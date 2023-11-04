@@ -2,7 +2,7 @@ import "./init";
 import swaggerUi from "swagger-ui-express";
 import { connectToDatabase } from "./database/connect";
 import logger from "./packages/logger";
-import { handleError } from "./utils";
+import { handleError } from "./packages/error";
 import { createApp } from "./app";
 import { useJwtStrategy } from "./packages/passport";
 import { connectToRedis } from "./packages/redis";

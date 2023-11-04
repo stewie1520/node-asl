@@ -1,8 +1,10 @@
+import { applyDecorators } from "@/packages/decorators";
 import { badRequest } from "@hapi/boom";
 import type { Handler, Request } from "express";
+import { Middlewares } from "tsoa";
 import { AnyZodObject, ZodError, z } from "zod";
 
-export async function zParse<T extends AnyZodObject>(
+async function zParseRequest<T extends AnyZodObject>(
   schema: T,
   req: Request,
 ): Promise<z.infer<T>> {
@@ -50,11 +52,15 @@ export const zPagination = (overwrite = {}) =>
 
 type TZMiddleware = <T extends AnyZodObject>(schema: T) => Handler;
 
-export const zMiddleware: TZMiddleware = (schema) => async (req, res, next) => {
+const zMiddleware: TZMiddleware = (schema) => async (req, res, next) => {
   try {
-    await zParse(schema, req);
+    await zParseRequest(schema, req);
     next();
   } catch (error) {
     next(error);
   }
+};
+
+export const Validation = <T extends AnyZodObject>(schema: T) => {
+  return applyDecorators(Middlewares(zMiddleware(schema)));
 };
