@@ -11,12 +11,14 @@
     "start": "node dist/index.js",
     "lint": "eslint . --ext .ts",
     "clean": "rimraf ./dist",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "build:proto": "sh ./build-proto.sh"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@grpc/grpc-js": "^1.9.9",
     "@hapi/boom": "^10.0.1",
     "@tsoa/runtime": "^5.0.0",
     "aws-sdk": "^2.1482.0",
@@ -46,6 +48,7 @@
     "@types/bcryptjs": "^2.4.5",
     "@types/body-parser": "^1.19.4",
     "@types/express": "^4.17.20",
+    "@types/google-protobuf": "^3.15.9",
     "@types/jsonwebtoken": "^9.0.4",
     "@types/lodash": "^4.14.200",
     "@types/module-alias": "^2.0.3",
@@ -57,6 +60,8 @@
     "eslint": "^8.52.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
+    "grpc-tools": "^1.12.4",
+    "grpc_tools_node_protoc_ts": "^5.3.3",
     "husky": "^8.0.0",
     "lint-staged": "^15.0.2",
     "nodemon": "^3.0.1",

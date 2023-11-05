@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package notification;
+
+import "google/protobuf/empty.proto";
+
+service Notification {
+  rpc push(NotificationRequest) returns (google.protobuf.Empty) {};
+}
+
+message NotificationRequest {
+  string notificationId = 1;
+}
+

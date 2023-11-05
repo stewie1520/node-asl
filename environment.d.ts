@@ -8,6 +8,7 @@ declare global {
       JWT_EXPIRES_IN: string;
       JWT_REFRESH_EXPIRES_IN: string;
       REDIS_URL: string;
+      GRPC_DNS: string;
 
       S3_REGION: string;
       S3_ACCESS_SECRET: string;
